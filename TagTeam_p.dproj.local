@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2022/10/14 20:48:15.000.805,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022/10/14 21:00:47.000.838,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\CreateSeason_u.dfm</Transaction>
+    <Transaction>2022/10/14 21:00:47.000.838,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\CreateSeason_u.pas</Transaction>
+    <Transaction>2022/10/14 21:00:53.000.360,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TagTeam_p.dproj</Transaction>
+    <Transaction>2022/10/14 21:02:51.000.507,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/14 21:29:08.000.735,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.dfm=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TagTeamDB_u.dfm</Transaction>
+    <Transaction>2022/10/14 21:29:08.000.735,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TagTeamDB_u.pas</Transaction>
+    <Transaction>2022/10/14 22:58:49.000.635,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/14 23:53:50.000.951,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\EditSeason_u.pas</Transaction>
+    <Transaction>2022/10/14 23:53:50.000.951,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.dfm=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\EditSeason_u.dfm</Transaction>
+    <Transaction>2022/10/15 00:33:27.000.525,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/15 00:34:42.000.356,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Login_u.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/15 00:34:42.000.356,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Login_u.dfm=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.dfm</Transaction>
+    <Transaction>2022/10/15 13:16:55.000.898,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/15 13:16:59.000.432,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit2.pas</Transaction>
+    <Transaction>2022/10/15 13:17:02.000.565,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit3.pas</Transaction>
+    <Transaction>2022/10/15 13:17:05.000.211,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit4.pas</Transaction>
+    <Transaction>2022/10/15 13:17:07.000.624,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit5.pas</Transaction>
+    <Transaction>2022/10/15 13:17:23.000.711,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\UserClass.pas</Transaction>
+    <Transaction>2022/10/15 13:17:31.000.250,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit2.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TeamClass.pas</Transaction>
+    <Transaction>2022/10/15 13:17:37.000.996,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit3.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\EventClass.pas</Transaction>
+    <Transaction>2022/10/15 13:17:51.000.126,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit4.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\ResultClass.pas</Transaction>
+    <Transaction>2022/10/15 13:17:59.000.930,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit5.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\PodiumClass.pas</Transaction>
+    <Transaction>2022/10/15 13:18:03.000.858,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/15 13:18:09.000.876,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\SeasonClass.pas</Transaction>
+    <Transaction>2022/10/15 13:18:59.000.218,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\SeasonClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\SeasonClass_u.pas</Transaction>
+    <Transaction>2022/10/15 13:19:05.000.917,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\PodiumClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\PodiumClass_u.pas</Transaction>
+    <Transaction>2022/10/15 13:19:11.000.977,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\ResultClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\ResultClass_u.pas</Transaction>
+    <Transaction>2022/10/15 13:19:18.000.674,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\EventClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\EventClass_u.pas</Transaction>
+    <Transaction>2022/10/15 13:19:24.000.013,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TeamClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\TeamClass_u.pas</Transaction>
+    <Transaction>2022/10/15 13:19:29.000.133,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\UserClass.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\UserClass_u.pas</Transaction>
+    <Transaction>2022/10/20 18:33:44.000.685,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/21 17:01:50.000.510,=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+    <Transaction>2022/10/21 17:40:36.000.000,C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Validation_u.pas=C:\Users\Tate\Documents\Embarcadero\Studio\Projects\TagTeam PAT (with OOP)\Ver2\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
