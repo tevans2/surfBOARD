@@ -137,12 +137,11 @@ procedure TfrmSEASONCreate.btnFinishSeasonSetupClick(Sender: TObject);
 var
   i, iPodiumEventID, iPodiumNumber: Integer;
   iTeam1, iTeam2, iTeam3, iTeam4: Integer;
-  iTeamCount, iTeamID, iSurferCount, iJudgeCount: Integer;
+  iTeamCount, iTeamID, iSurferCount, iJudgeCount, iCoachCount: Integer;
   bValidSeason: Boolean;
   sError: String;
 begin
-  frmSEASONEdit.show;
-  frmSEASONCreate.Hide;
+
   bValidSeason := True;
   with dmTagTeam do
   begin
@@ -160,9 +159,31 @@ begin
     while not tblTEAM.Eof do
     begin
       if tblTEAM['seasonid'] = SeasonID then
+      begin
         iTeamID := tblTEAM['teamid'];
+        iCoachCount := 0;
+        tblUSER.First;
+        while not tblUSER.Eof do
+        begin
+          if (tblUSER['teamid'] = iTeamID) and (tblUSER['type'] = 'COACH') then
+            inc(iCoachCount);
+          tblUSER.Next;
+        end;
+        if iCoachCount < 1 then
+        begin
+          bValidSeason := False;
+          sError := 'Not enough coaches. Please ensure that there is only 1 coach assigned to every team.';
+        end
+        else if iCoachCount > 1 then
+        begin
+          bValidSeason := False;
+          sError := 'More than one coach assigned to a team. Please ensure each there is 1 coach assigned to every team.'
+        end;
+      end;
 
       tblUSER.First;
+      iSurferCount := 0;
+      iJudgeCount := 0;
       while not tblUSER.Eof do
       begin
         // Get number of surfers in each team
@@ -170,62 +191,60 @@ begin
           if (tblUSER['teamid'] = iTeamID) and (tblUSER['type'] = 'SURFER') then
             inc(iSurferCount);
 
-        if iSurferCount < 5 then
-        begin
-          bValidSeason := False;
-          sError := 'Not enough surfers. Please enter more at least 5 surfers per team.';
-        end;
-
-
-
-        //Check 1 coach per team***
-
-
-
-
-        if iSurferCount < 5 then
-        begin
-          bValidSeason := False;
-          sError := 'Not enough surfers. Please enter more at least 5 surfers per team.';
-        end;
-
         // Gets number of judges in season
         if (tblUSER['seasonid'] = SeasonID) and (tblUSER['type'] = 'JUDGE') then
           inc(iJudgeCount);
 
-        if iJudgeCount < 1 then
-        begin
-          bValidSeason := False;
-          sError := 'No judges. Please enter 1 or more judges.';
-        end;
+        tblUSER.Next;
       end;
-    end;
-
-  end;
-
-  Podium := TPodium.Create;
-  Podium.SetupPodiums(SeasonID); // Sets up Team Matrix
-  with dmTagTeam do
-  begin
-    tblEVENT.First;
-    while not tblEVENT.Eof do // Enters all podiums for all events into database
-    begin
-      for i := 1 to PodiumClass_u.iPodiums do
+      if iSurferCount < 5 then
       begin
-        iPodiumEventID := tblEVENT['eventID'];
-        iPodiumNumber := i;
-        Podium := TPodium.Create;
-        Podium.GetTeams(iPodiumNumber, iTeam1, iTeam2, iTeam3, iTeam4);
-
-        Podium.Create(iPodiumEventID, iPodiumNumber, iTeam1, iTeam2,
-          iTeam3, iTeam4);
-        Podium.InsertPodiumRecord;
-
+        bValidSeason := False;
+        sError := 'Not enough surfers. Please enter at least 5 surfers per team.';
       end;
-      Podium.ShiftPodiums;
-      tblEVENT.Next;
+
+      if iJudgeCount < 1 then
+      begin
+        bValidSeason := False;
+        sError := 'No judges. Please enter 1 or more judges.';
+      end;
+      tblTEAM.Next;
     end;
+
   end;
+  if bValidSeason = True then
+  begin
+    frmSEASONEdit.show;
+    frmSEASONCreate.Hide;
+    ShowMessage('Season Created Successfully!');
+
+    Podium := TPodium.Create;
+    Podium.SetupPodiums(SeasonID); // Sets up Team Matrix
+    with dmTagTeam do
+    begin
+      tblEVENT.First;
+      while not tblEVENT.Eof do
+      // Enters all podiums for all events into database
+      begin
+        for i := 1 to PodiumClass_u.iPodiums do
+        begin
+          iPodiumEventID := tblEVENT['eventID'];
+          iPodiumNumber := i;
+          Podium := TPodium.Create;
+          Podium.GetTeams(iPodiumNumber, iTeam1, iTeam2, iTeam3, iTeam4);
+
+          Podium.Create(iPodiumEventID, iPodiumNumber, iTeam1, iTeam2,
+            iTeam3, iTeam4);
+          Podium.InsertPodiumRecord;
+
+        end;
+        Podium.ShiftPodiums;
+        tblEVENT.Next;
+      end;
+    end;
+  end
+  else
+    Showmessage(sError);
 end;
 
 procedure TfrmSEASONCreate.btnEVENTCancelClick(Sender: TObject);
@@ -398,6 +417,16 @@ begin
   bSuccess := False;
   dtSeasonStart := dpStart.Date;
   dtSeasonEnd := dpEnd.Date;
+
+  with dmTagTeam do
+  begin
+    tblTEAM.Close;
+    tblUSER.Close;
+    tblEVENT.Close;
+    tblTEAM.Open;
+    tblUSER.Open;
+    tblEVENT.Open;
+  end;
 
   Season := TSeason.Create(dtSeasonStart, dtSeasonEnd);
   if Season.Validate = '' then
@@ -572,7 +601,7 @@ begin
   Team := TTeam.Create();
   arrTeamID := Team.MakeTeamIDArray;
   with dmTagTeam do
-    for i := 1 to Length(arrTeamID) - 1 do
+    for i := 0 to Length(arrTeamID) - 1 do
     begin
       tblTEAM.Locate('teamID', arrTeamID[i], []);
       cbbUserTeam.Items.Add(tblTEAM['team_name']);
@@ -626,7 +655,7 @@ begin
     // Find index in arrTeamID to determined itemindex needed
     begin
       if arrTeamID[i] = tblUSER['teamID'] then
-        iIndex := i - 1;
+        iIndex := i;
     end;
 
     if iIndex >= 0 then
@@ -651,12 +680,13 @@ var
   iTeam, iSeason, iNum: Integer;
 begin
   sFirstName := edtFirstName.Text;
+  iSeason := SeasonID;
   sSurname := edtUserSurname.Text;
   sType := uppercase(cbbUserType.Text);
   sEmail := edtEmail.Text;
   sCell := edtCell.Text;
   if Length(arrTeamID) > 0 then
-    iTeam := arrTeamID[cbbUserTeam.ItemIndex + 1]
+    iTeam := arrTeamID[cbbUserTeam.ItemIndex]
   else
   begin
     Showmessage('Please fill in the teams table before entering users.');
@@ -665,6 +695,8 @@ begin
     Exit
   end;
 
+  if sType = 'JUDGE' then
+    iTeam := 0;
   User := TUser.Create(sType, iTeam, iSeason, sFirstName, sSurname,
     sCell, sEmail);
   if User.Validate = '' then

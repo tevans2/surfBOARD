@@ -67,6 +67,65 @@ begin
         arrTeamScores[j] := iSwap;
       end;
 
+  for i := 1 to 4 do
+  begin
+    if arrTeamScores[i] = iteam1_score then
+      iteam1_score := i;
+
+    if arrTeamScores[i] = iteam2_score then
+      iteam2_score := i;
+
+    if arrTeamScores[i] = iteam3_score then
+      iteam3_score := i;
+
+    if arrTeamScores[i] = iteam4_score then
+      iteam4_score := i;
+  end;
+
+  // 1000, 860, 730, 670
+  case iteam1_score of
+    1:
+      iteam1_score := 670;
+    2:
+      iteam1_score := 730;
+    3:
+      iteam1_score := 860;
+    4:
+      iteam1_score := 1000;
+  end;
+
+    case iteam2_score of
+    1:
+      iteam2_score := 670;
+    2:
+      iteam2_score := 730;
+    3:
+      iteam2_score := 860;
+    4:
+      iteam2_score := 1000;
+  end;
+
+    case iteam3_score of
+    1:
+      iteam3_score := 670;
+    2:
+      iteam3_score := 730;
+    3:
+      iteam3_score := 860;
+    4:
+      iteam3_score := 1000;
+  end;
+
+    case iteam4_score of
+    1:
+      iteam4_score := 670;
+    2:
+      iteam4_score := 730;
+    3:
+      iteam4_score := 860;
+    4:
+      iteam4_score := 1000;
+  end;
 end;
 
 constructor TPodium.Create(eventID, podium, team1, team2, team3,

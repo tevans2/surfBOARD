@@ -95,16 +95,29 @@ begin
       Delete(sLine, 1, iPos);
       iPos := pos(',', sLine);
 
-      sTeam := ExtractFileName(FileName);
+      sTeam := uppercase(ExtractFileName(FileName));
       Delete(sTeam, pos('.', sTeam), length(sTeam));
       with dmTagTeam do
       begin
-        if tblTeam.Locate('team_name', sTeam, []) = true then
-          Self.teamID := tblTeam['teamID']
-        else
+        tblTEAM.First;
+        while not tblTEAM.Eof do
+        begin
+          if (tblTEAM['seasonId'] = frmSEASONCreate.seasonID) AND
+            (uppercase(tblTEAM['team_name']) = sTeam) then
+          begin
+            Self.teamID := tblTEAM['teamID'];
+            break
+          end
+          else
+            tblTEAM.Next
+        end;
+        if Self.teamID < 1 then
+        begin
           Showmessage
             ('Choosen Team does not exist, please create the team before adding users.');
-      end;
+        exit
+        end;
+      end;;
 
       Self.first_name := Copy(sLine, 1, iPos - 1);
       Delete(sLine, 1, iPos);
@@ -257,7 +270,7 @@ begin
       if CheckUserType(UserType) = False then
         Result := '2Invalid User Type';
 
-      if dmTagTeam.tblTeam.Locate('teamID', teamID, []) = False then
+      if dmTagTeam.tblTEAM.Locate('teamID', teamID, []) = False then
         Result := '3Invalid Team';
 
       if (UserType = 'JUDGE') and (teamID > 0) then

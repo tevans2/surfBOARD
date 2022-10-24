@@ -14,11 +14,13 @@ type
     UserResult: real;
 
   public
+    constructor Create; overload;
     constructor Create(UserID, eventID, teamID, judgeID: integer;
-      UserResult: real);
+      UserResult: real); overload;
     procedure InsertResultRecord;
     procedure UpdateResultRecord;
     function Validate: String;
+    function CreateResultFilter(SeasonID: integer): String;
 
   End;
 
@@ -41,17 +43,48 @@ begin
   Self.UserResult := UserResult;
 end;
 
+constructor TResult.Create;
+begin
+
+end;
+
+function TResult.CreateResultFilter(SeasonID: integer): String;
+var
+  sResultFilter: String;
+  iResultEvent: integer;
+begin
+  with dmTagTeam do
+  begin
+    tblRESULT.First;
+    while not tblRESULT.Eof do
+    begin
+      iResultEvent := tblRESULT['eventID'];
+      tblEVENT.Locate('eventID', iResultEvent, []);
+      if tblEVENT['seasonID'] = SeasonID then
+        sResultFilter := sResultFilter + 'eventID =' +
+          iResultEvent.ToString + ' OR ';
+      tblRESULT.Next;
+    end;
+
+    Delete(sResultFilter, Length(sResultFilter) - 3, 3);
+    if sResultFilter = '' then
+      sResultFilter := 'eventID =' + '0';
+
+    Result := sResultFilter;
+  end;
+end;
+
 procedure TResult.InsertResultRecord;
 begin
   with dmTagTeam do
   begin
-    tblResult.Append;
-    tblResult['userid'] := UserID;
-    tblResult['eventID'] := eventID;
-    tblResult['teamID'] := teamID;
-    tblResult['judgeID'] := judgeID;
-    tblResult['result'] := UserResult;
-    tblResult.Post;
+    tblRESULT.Append;
+    tblRESULT['userid'] := UserID;
+    tblRESULT['eventID'] := eventID;
+    tblRESULT['teamID'] := teamID;
+    tblRESULT['judgeID'] := judgeID;
+    tblRESULT['result'] := UserResult;
+    tblRESULT.Post;
   end;
 end;
 
@@ -59,13 +92,13 @@ procedure TResult.UpdateResultRecord;
 begin
   with dmTagTeam do
   begin
-    tblResult.Edit;
-    tblResult['userid'] := UserID;
-    tblResult['eventID'] := eventID;
-    tblResult['teamID'] := teamID;
-    tblResult['judgeID'] := judgeID;
-    tblResult['result'] := UserResult;
-    tblResult.Post;
+    tblRESULT.Edit;
+    tblRESULT['userid'] := UserID;
+    tblRESULT['eventID'] := eventID;
+    tblRESULT['teamID'] := teamID;
+    tblRESULT['judgeID'] := judgeID;
+    tblRESULT['result'] := UserResult;
+    tblRESULT.Post;
   end;
 end;
 
@@ -78,36 +111,36 @@ begin
   with Valid do
   begin
     if CheckNull(UserID.ToString) = false then
-      result := '1Invalid User';
+      Result := '1Invalid User';
 
     if CheckNull(eventID.ToString) = false then
-      result := '2Invalid Event';
+      Result := '2Invalid Event';
 
     if CheckNull(teamID.ToString) = false then
-      result := '3Invalid Team';
+      Result := '3Invalid Team';
 
     if CheckNull(judgeID.ToString) = false then
-      result := '4Invalid Judge';
+      Result := '4Invalid Judge';
 
     if CheckNull(iUserResult.ToString) = false then
-      result := '5Invalid Result';
+      Result := '5Invalid Result';
 
-    if result = '' then
+    if Result = '' then
     begin
       if dmTagTeam.tblUSER.Locate('userID', UserID, []) = false then
-        result := '1Invalid User';
+        Result := '1Invalid User';
 
       if dmTagTeam.tblEVENT.Locate('eventID', eventID, []) = false then
-        result := '2Invalid Event';
+        Result := '2Invalid Event';
 
       if dmTagTeam.tblTEAM.Locate('teamID', teamID, []) = false then
-        result := '3Invalid Team';
+        Result := '3Invalid Team';
 
-      if dmTagTeam.tblUSER.Locate('userID', JudgeID, []) = false then
-        result := '4Invalid Judge';
+      if dmTagTeam.tblUSER.Locate('userID', judgeID, []) = false then
+        Result := '4Invalid Judge';
 
       if CheckResult(iUserResult.ToString) = false then
-        result := '5Invalid Result';
+        Result := '5Invalid Result';
 
     end;
   end;

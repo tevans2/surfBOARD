@@ -23,7 +23,7 @@ object frmSEASONCreate: TfrmSEASONCreate
     Top = 40
     Width = 929
     Height = 529
-    ActivePage = tbshtEvent
+    ActivePage = tbshtSEASON
     TabOrder = 0
     object tbshtSEASON: TTabSheet
       Caption = 'Create Season'
@@ -634,6 +634,7 @@ object frmSEASONCreate: TfrmSEASONCreate
     OnClick = btnCancelSeasonSetupClick
   end
   object OpenDlgFilePicker: TOpenDialog
+    Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Left = 1024
     Top = 240
   end

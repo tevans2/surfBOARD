@@ -67,7 +67,7 @@ type
     Button1: TButton;
     tbshtSEASONRANK: TTabSheet;
     pnlSeasonRank: TPanel;
-    rea: TStringGrid;
+    stgSEASONRANK: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure btnUSERCreateClick(Sender: TObject);
     procedure btnUSERCancelClick(Sender: TObject);
@@ -89,7 +89,7 @@ type
     procedure edtResult1Change(Sender: TObject);
     procedure edtResult2Change(Sender: TObject);
     procedure edtResult3Change(Sender: TObject);
-    procedure tbshtSEASONRANKShow(Sender: TObject);
+    procedure tbshtSEASONRANKEnter(Sender: TObject);
   private
     { Private declarations }
     iCUD: Integer; // Create = 1, Update = 2
@@ -182,7 +182,7 @@ begin
     // populate cbbEvent
     begin
       tblEVENT.Locate('eventID', arrEventID[i], []);
-      cbbEvent.Items.Add(tblEVENT['event_name'] + ' - ' +
+      cbbEvent.Items.Add(inttostr(i + 1) + ' - ' +
         datetostr(tblEVENT['event_date']));
     end;
 end;
@@ -348,9 +348,10 @@ end;
 procedure TfrmSEASONEdit.btnSEASONSelectClick(Sender: TObject);
 var
   sResultFilter: String;
-  iResultEvent, iPos: Integer;
+  iResultEvent, iPos, iNum: Integer;
   sCaption: String;
 begin
+
   if cbbSeasonSelect.Text = '' then
   begin
     Showmessage('Please select a season to edit');
@@ -375,21 +376,8 @@ begin
     tblUser.Filter := 'seasonID =' + SeasonID.ToString;
     tblUser.Filtered := True;
 
-    tblRESULT.First;
-    while not tblRESULT.Eof do
-    begin
-      iResultEvent := tblRESULT['eventID'];
-      tblEVENT.Locate('eventID', iResultEvent, []);
-      if tblEVENT['seasonID'] = SeasonID then
-        sResultFilter := sResultFilter + 'eventID =' +
-          iResultEvent.ToString + ' OR ';
-      tblRESULT.Next;
-    end;
-
-    Delete(sResultFilter, Length(sResultFilter) - 3, 3);
-    if sResultFilter = '' then
-      sResultFilter := 'eventID =' + '0';
-    tblRESULT.Filter := sResultFilter;
+    Result := TResult.Create;
+    tblRESULT.Filter := Result.CreateResultFilter(SeasonID);
     tblRESULT.Filtered := True;
 
     tblEVENT.Filter := 'seasonID =' + SeasonID.ToString;
@@ -398,6 +386,23 @@ begin
     tblTEAM.Filter := 'seasonID =' + SeasonID.ToString;
     tblTEAM.Filtered := True;
   end;
+
+  stgSEASONRANK.Cells[0, 0] := 'Season ' + SeasonID.ToString + ' Ranking Table';
+  // iNum := 0;
+  // with dmTagTeam do
+  // begin
+  // tblTEAM.First;
+  // while not tblTEAM.Eof do
+  // begin
+  // if tblTEAM['seasonid'] = SeasonID then
+  // begin
+  // inc(iNum);
+  // stgSEASONRANK.RowCount := iNum + 1;
+  // stgSEASONRANK.Cells[0, iNum] := tblTEAM['team_name'];
+  // end;
+  // tblTEAM.Next;
+  // end;
+  // end;
 
 end;
 
@@ -720,19 +725,43 @@ begin
   // Event
   dbgEVENT.Columns.Items[0].Title.Caption := 'Event Date';
   dbgEVENT.Columns.Items[0].Width := 200;
+
+  stgSEASONRANK.ColCount := 3;
+  stgSEASONRANK.ColWidths[0] := 170;
+  stgSEASONRANK.Cells[1, 0] := 'TOTAL';
+  stgSEASONRANK.Cells[2, 0] := 'Position';
+
 end;
 
-procedure TfrmSEASONEdit.tbshtSEASONRANKShow(Sender: TObject);
+procedure TfrmSEASONEdit.tbshtSEASONRANKEnter(Sender: TObject);
 var
   iEventID, iTeam1, iTeam2, iTeam3, iTeam4: Integer;
-  iTeam1Score, iTeam2Score, iTeam3Score, iTeam4Score: Integer;
+  iTeam1Score, iTeam2Score, iTeam3Score, iTeam4Score, iNum: Integer;
+  arrTeamNameSorted: array of String;
+  arrTeamScoreSorted: array of Integer;
+  i, j, iSwapScore: Integer;
+  sSwapName: String;
+
 begin
-  iTeam1Score := 0;
-  iTeam2Score := 0;
-  iTeam3Score := 0;
-  iTeam4Score := 0;
   with dmTagTeam do
   begin
+    tblTEAM.First;
+    while not tblTEAM.Eof do
+    begin
+      if tblTEAM['seasonid'] = SeasonID then
+      begin
+        tblTEAM.Edit;
+        tblTEAM['team_score'] := 0;
+        tblTEAM.Post;
+      end;
+      tblTEAM.Next;
+    end;
+
+    iTeam1Score := 0;
+    iTeam2Score := 0;
+    iTeam3Score := 0;
+    iTeam4Score := 0;
+
     tblPODIUM.First;
     while not tblPODIUM.Eof do
     begin
@@ -741,32 +770,93 @@ begin
       iTeam2 := tblPODIUM['team2'];
       iTeam3 := tblPODIUM['team3'];
       iTeam4 := tblPODIUM['team4'];
+      iTeam1Score := 0;
+      iTeam2Score := 0;
+      iTeam3Score := 0;
+      iTeam4Score := 0;
 
-      tblRESULT.First;
-      while not tblRESULT.Eof do
+      if tblRESULT.Locate('eventid', iEventID, []) = True then
       begin
-        if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam1)
-        then
-          iTeam1Score := iTeam1Score + (tblRESULT['result'] * 10);
+        tblRESULT.First;
+        while not tblRESULT.Eof do
+        begin
 
-        if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam2)
-        then
-          iTeam2Score := iTeam2Score + (tblRESULT['result'] * 10);
+          if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam1)
+          then
+            iTeam1Score := iTeam1Score + (tblRESULT['result'] * 10);
 
-        if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam3)
-        then
-          iTeam3Score := iTeam3Score + (tblRESULT['result'] * 10);
+          if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam2)
+          then
+            iTeam2Score := iTeam2Score + (tblRESULT['result'] * 10);
 
-        if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam4)
-        then
-          iTeam4Score := iTeam4Score + (tblRESULT['result'] * 10);
+          if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam3)
+          then
+            iTeam3Score := iTeam3Score + (tblRESULT['result'] * 10);
 
-         Podium := TPodium.Create;
-         Podium.ConvertToPodiumScores(iTeam1Score, iTeam2Score, iTeam3Score, iTeam4Score);
+          if (tblRESULT['eventid'] = iEventID) and (tblRESULT['teamid'] = iTeam4)
+          then
+            iTeam4Score := iTeam4Score + (tblRESULT['result'] * 10);
+
+          tblRESULT.Next;
+        end;
+
+        Podium := TPodium.Create;
+        Podium.ConvertToPodiumScores(iTeam1Score, iTeam2Score, iTeam3Score,
+          iTeam4Score);
+
+        Team := TTeam.Create;
+        Team.AddTeamScore(iTeam1Score, iTeam1);
+        Team.AddTeamScore(iTeam2Score, iTeam2);
+        Team.AddTeamScore(iTeam3Score, iTeam3);
+        Team.AddTeamScore(iTeam4Score, iTeam4);
+        tblTEAM.Close;
+        tblTEAM.Open;
+      end;
+
+      tblPODIUM.Next;
+    end;
+
+    iNum := 0;
+    tblTEAM.First;
+    while not tblTEAM.Eof do
+    begin
+      if tblTEAM['seasonid'] = SeasonID then
+      begin
+        inc(iNum);
+        setlength(arrTeamNameSorted, iNum);
+        setlength(arrTeamScoreSorted, iNum);
+        arrTeamNameSorted[iNum - 1] := tblTEAM['team_name'];
+        arrTeamScoreSorted[iNum - 1] := tblTEAM['team_score'];
 
       end;
+      tblTEAM.Next;
     end;
+    stgSEASONRANK.RowCount := iNum + 1;
+
+    for i := 0 to Length(arrTeamNameSorted) - 1 do
+      for j := 0 to Length(arrTeamNameSorted) - 1 do
+        if arrTeamScoreSorted[i] > arrTeamScoreSorted[j] then
+        begin
+          iSwapScore := arrTeamScoreSorted[i];
+          sSwapName := arrTeamNameSorted[i];
+
+          arrTeamScoreSorted[i] := arrTeamScoreSorted[j];
+          arrTeamNameSorted[i] := arrTeamNameSorted[j];
+
+          arrTeamScoreSorted[j] := iSwapScore;
+          arrTeamNameSorted[j] := sSwapName;
+
+        end;
+
+    for i := 0 to Length(arrTeamScoreSorted) - 1 do
+    begin
+      stgSEASONRANK.Cells[0, i + 1] := arrTeamNameSorted[i];
+      stgSEASONRANK.Cells[1, i + 1] := inttostr(arrTeamScoreSorted[i]);
+      stgSEASONRANK.Cells[2, i + 1] := inttostr(i + 1);
+    end;
+
   end;
+
 end;
 
 end.

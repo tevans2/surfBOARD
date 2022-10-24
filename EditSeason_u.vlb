@@ -79,9 +79,6 @@ Coordinates=581,500,121,58
 [Label19]
 Coordinates=1172,432,60,58
 
-[rea]
-Coordinates=140,500,40,58
-
 [tbshtSEASONRANK]
 Coordinates=1097,568,131,36
 
@@ -205,4 +202,7 @@ Coordinates=399,568,86,36
 
 []
 Coordinates=626,1025,91,36
+
+[stgSEASONRANK]
+Coordinates=140,500,40,58
 

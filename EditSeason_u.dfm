@@ -20,10 +20,11 @@ object frmSEASONEdit: TfrmSEASONEdit
     Top = 56
     Width = 929
     Height = 529
-    ActivePage = tbshtTEAM
+    ActivePage = tbshtSEASONRANK
     TabOrder = 0
     object tbshtSEASON: TTabSheet
       Caption = 'Select Season'
+      ExplicitLeft = 0
       object Panel1: TPanel
         Left = 272
         Top = 80
@@ -553,16 +554,17 @@ object frmSEASONEdit: TfrmSEASONEdit
       Font.Style = []
       ImageIndex = 5
       ParentFont = False
+      OnEnter = tbshtSEASONRANKEnter
       object pnlSeasonRank: TPanel
-        Left = 240
+        Left = 224
         Top = 17
-        Width = 353
+        Width = 457
         Height = 465
         TabOrder = 0
-        object rea: TStringGrid
+        object stgSEASONRANK: TStringGrid
           Left = 48
           Top = 24
-          Width = 265
+          Width = 393
           Height = 417
           TabOrder = 0
         end

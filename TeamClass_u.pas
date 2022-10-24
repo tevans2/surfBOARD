@@ -28,6 +28,7 @@ type
     function MakeTeamIDArray(): TIntArray;
     function Validate: String;
     procedure CopyOverTeams(ToSeason, FromSeason: integer);
+    procedure AddTeamScore(team_score, teamid: integer);
   end;
 
 implementation
@@ -35,6 +36,20 @@ implementation
 var
   Valid: TValidate;
   { TTeam }
+
+procedure TTeam.AddTeamScore(team_score, teamid: integer);
+var
+  i: integer;
+begin
+  with dmTagTeam do
+  begin
+    tblTEAM.Locate('teamid', teamid, []);
+    i := tblTEAM['teamId'];
+    tblTEAM.Edit;
+    tblTEAM['team_score'] := tblTEAM['team_score'] + team_score;
+    tblTEAM.Post;
+  end;
+end;
 
 procedure TTeam.CopyOverTeams(ToSeason, FromSeason: integer);
 var
@@ -183,6 +198,7 @@ begin
     tblTEAM['teamID'] := teamid;
     tblTEAM['team_name'] := team_name;
     tblTEAM['seasonID'] := seasonID;
+    tblTEAM['team_score'] := 0;
     tblTEAM.Post;
   end;
 end;
